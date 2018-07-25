@@ -3,9 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+import mongoose from 'mongoose';
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
+mongoose.Promise =  Promise;
+mongoose.connect('mongodb://localhost:27017/my_kick', {useNewUrlParser:true});
 
 var app = express();
 
