@@ -4,7 +4,7 @@ import Project from '../models/project';
 const router = Router();
 
 /* GET users listing. */
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   // const data = req.body;
   // const projectDetails = {
   //   title: String,
@@ -14,14 +14,14 @@ router.post('/', (req, res, next) => {
   //   createdDate: String,
   //   expirationDate: String,
   // };
-  // const newProject = await User.create(projectDetails);
-
-  // res.send(newProject);
-  res.send(req.body.values);
+  const newProject = await Project.create(req.body.values);
+  console.log(newProject);
+  res.send(newProject);
+  // res.send(req.body.values);
 });
 
 
-router.get('/allUsers', async(req, res, next) => {
+router.get('/allProjects', async(req, res, next) => {
   const allProject = await Project.find();
   if(allProject){
     res.send(allProject);

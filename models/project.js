@@ -5,9 +5,9 @@ const ProjectSchema = mongoose.Schema({
   description: String,
   explanation: String,
   amount: Number,
-  createdDate: String,
-  expirationDate: String,
-  images: [String],
+  createdDate: Date,
+  expirationDate: Date,
+  images: [{preview:String}],
   video: String,
   donationList: [{
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

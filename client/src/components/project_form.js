@@ -131,8 +131,9 @@ class ProjectNew extends Component {
     // axios.post('', fd)
     //   .then(res => {console.log(res)});
     debugger;
-    console.log("values react:    " + JSON.stringify(values));
-    axios.post('http://localhost:3001/project/', {values})
+    console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
+    // axios.post('http://localhost:3001/project/', {...values, createdDate:Date.now()})
+    axios.post('http://localhost:3001/project/', {values: {...values, expirationDate: new Date(values.expirationDate),createdDate:Date.now()}})
       .then(res => {console.log(res)});
   }
 
@@ -188,24 +189,27 @@ class ProjectNew extends Component {
 function validate(values){
   // console.log("values:    " + JSON.stringify(values));
   const errors = {};
-  // if(!values.title){
-  //   errors.title = "*Please enter a title";
-  // }
-  // if(!values.description){
-  //   errors.description = "*Please enter a description";
-  // }
-  // if(!values.explanation){
-  //   errors.explanation = "*Please enter a explanation";
-  // }
-  // if(!values.requiredMoney){
-  //   errors.requiredMoney = "*Please enter amount of money required";
-  // }
-  // if(!values.expirationDate){
-  //   errors.expirationDate = "*Please enter a date";
-  // }
-  // if(values.expirationDate < Date.now()){
-  //   errors.expirationDate = "*The date must be in the future";
-  // }
+  if(!values.title){
+    errors.title = "*Please enter a title";
+  }
+  if(!values.description){
+    errors.description = "*Please enter a description";
+  }
+  if(!values.explanation){
+    errors.explanation = "*Please enter a explanation";
+  }
+  if(!Number.isInteger(Number.parseInt(values.amount))){
+    errors.amount = "*Please enter a number";
+  }
+  if(!values.requiredMoney){
+    errors.requiredMoney = "*Please enter amount of money required";
+  }
+  if(!values.expirationDate){
+    errors.expirationDate = "*Please enter a date";
+  }
+  if(values.expirationDate < Date.now()){
+    errors.expirationDate = "*The date must be in the future";
+  }
 
 
   return errors;
