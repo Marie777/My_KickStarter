@@ -10,11 +10,25 @@ class Accept extends Component {
     }
   }
 
+  sendImages() {
+      console.log(this.state);
+  }
+
   render() {
     return (
       <section>
         <div className="dropzone">
           <Dropzone
+            style={{
+              width: '600px',
+              height: '200px',
+              borderWidth: '2px',
+              borderColor: 'rgb(102, 102, 102)',
+              borderStyle: 'dashed',
+              borderRadius: '5px',
+              padding: '200px',
+              margin: '30px'
+            }}
             accept="image/jpeg, image/png, video/*"
             onDrop={(accepted, rejected) => { this.setState({...this.state, accepted, rejected }); }}
           >
@@ -26,7 +40,13 @@ class Accept extends Component {
           <h5>Accepted files</h5>
           <ul>
             {
-              this.state.accepted.map(f => <li key={f.name}>{f.name} - {f.size} bytes</li>)
+              this.state.accepted.map((f, i) =>
+                <li key={f.name}>
+                  {f.name} - {f.size} bytes
+                  <img key={i} className="img-thumbnail"
+                       src={f.preview} alt="preview"/>
+                </li>
+              )
             }
           </ul>
           <h5>Rejected files</h5>
@@ -36,6 +56,7 @@ class Accept extends Component {
             }
           </ul>
         </aside>
+        <button className="btn btn-primary" onClick={this.sendImages.bind(this)}> upload images </button>
       </section>
     );
   }

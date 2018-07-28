@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import ProjectNew from './components/project_form';
-import ProjectDropZone from './components/project_dropZone';
-
+import ProjectNewForm from './components/project_form';
 
 class App extends Component {
   render() {
@@ -12,10 +10,7 @@ class App extends Component {
             <h1 className="App-title">My-KickStarter</h1>
           </header>
           <div>
-            <ProjectNew/>
-          </div>
-          <div>
-            <ProjectDropZone/>
+            <ProjectNewForm/>
           </div>
         </div>
     );
