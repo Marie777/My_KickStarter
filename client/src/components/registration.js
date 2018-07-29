@@ -18,13 +18,14 @@ class Registration extends Component {
   renderField(field) {
     const {touched, error} = field.meta;
     const className = `form-group ${touched && error ? 'alert alert-danger' : ''}`;
+    const type = field.label === "Password" ? "password" : "text";
 
     return (
       <div className={className}>
         <label>{field.label}</label>
         <input
-        className="form-control "
-          type = "text"
+          className="form-control "
+          type = {type}
           {...field.input}
         />
         <div className="text-help">
