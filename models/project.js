@@ -7,7 +7,7 @@ const ProjectSchema = mongoose.Schema({
   amount: Number,
   createdDate: Date,
   expirationDate: Date,
-  images: [{preview:String}],
+  images: [String],
   video: String,
   donationList: [{
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

@@ -4,8 +4,9 @@ import Project from '../models/project';
 const router = Router();
 
 /* GET users listing. */
+//TODO: edit: if mongoID !== "" => update mongo (not create)
 router.post('/', async (req, res, next) => {
-  const {title, description, explanation, amount, createdDate, expirationDate} = req.body.values;
+  const {projectID, title, description, explanation, amount, createdDate, expirationDate} = req.body.values;
   const projectDetails = {
     title,
     description,
@@ -31,7 +32,7 @@ router.get('/allProjects', async(req, res, next) => {
 });
 
 
-router.post('/upload', (req, res, next) => {
+router.post('/upload', async (req, res, next) => {
   // console.log(req);
 
   let projectId = req.files.projectId;
@@ -40,13 +41,28 @@ router.post('/upload', (req, res, next) => {
 
   console.log(req.files);
 
-  imageFile.mv(`${__dirname}/../public/uploadImg/${imageFileName}`, function(err) {
+  const dirFile = `${__dirname}/../public/uploadImg/${imageFileName}`;
+
+  imageFile.mv(dirFile, async(err) => {
     if (err) {
       return res.status(500).send(err);
     }
 
-    res.json({file: `public/${imageFileName}`});
+    let updateImg = await Project.findOneAndUpdate(
+      {_id : projectId },
+      {$push : {images : imageFileName} },
+      {safe:true, upsert:true}
+    );
+    if(updateImg){
+      res.send(updateImg);
+    }else{
+      res.send(err);
+    }
+
+    // res.json({file: `public/${imageFileName}`});
   });
+
+
 
 });
 

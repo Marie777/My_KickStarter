@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Field , reduxForm } from 'redux-form';
+import { Field , reduxForm, propTypes } from 'redux-form';
+import PropTypes from "prop-types";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Dropzone from 'react-dropzone';
@@ -38,17 +39,6 @@ class ProjectNew extends Component {
   }
 
 
-  renderUploadField(field) {
-    return (
-      <div>
-        <label>{field.label}</label>
-        <input
-          type="file"
-          {...field.input}
-        />
-      </div>
-    );
-  }
 // {console.log(moment(input.value))}
   renderDatePicker({input, placeholder, defaultValue, meta: {touched, error} }) {
     const className = `form-group ${touched && error ? 'alert alert-danger' : ''}`;
@@ -130,22 +120,30 @@ class ProjectNew extends Component {
   onSubmit(values) {
     // debugger;
     console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
+    let projectID = this.props.projectID !== "" ? this.props.projectID : "";
 
-    axios.post('http://localhost:3001/project/', {values: {...values, expirationDate: new Date(values.expirationDate),createdDate:Date.now()}})
+    const data = {
+      values: {
+        ...values,
+        expirationDate: new Date(values.expirationDate),
+        createdDate:Date.now(),
+        projectID
+      }
+    };
+
+    axios.post('http://localhost:3001/project/', data)
       .then(res => {
         console.log(res);
-        const projectId = res.data._id;
         if(values.images){
           values.images.forEach((img) => {
             const fd = new FormData();
             fd.append('file',img);
-            fd.append('projectId', projectId);
+            fd.append('projectId', res.data._id);                       //TODO: projectId isn't correct
             axios.post('http://localhost:3001/project/upload', fd)
               .then(res => {console.log(res)});
           });
         }
       });
-
 
 
 
@@ -189,15 +187,17 @@ class ProjectNew extends Component {
           name = "explanation"
           component = {this.renderField}
         />
-        <Field
-          label = "Upload"
-          name = "upload"
-          component = {this.renderUploadField}
-        />
         <button type="submit" className="btn btn-primary">submit</button>
       </form>
     );
   }
+
+  static propTypes = {
+      ...propTypes,
+      expirationDate: PropTypes.string
+      // other props you might be using
+    }
+
 }
 
 function validate(values){
@@ -228,6 +228,8 @@ function validate(values){
 
   return errors;
 }
+
+
 
 export default reduxForm({
   validate,
