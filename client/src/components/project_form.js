@@ -67,7 +67,7 @@ class ProjectNew extends Component {
   renderDropzoneInput(field) {
     const files = field.input.value;
     return (
-        <div className="text-center">
+        <div className="fallback">
           <Grid>
             <Row>
           <Dropzone
@@ -84,14 +84,16 @@ class ProjectNew extends Component {
               name={field.name}
               onDrop={(filesToUpload, e) => {
                 field.input.onChange(filesToUpload);
-                console.log(field);
               }}
               maxSize={5242880}
               multiple={true}
               accept={'image/*'}
               className="drop-zone"
+
           >
             {({isDragActive, isDragReject, acceptedFiles, rejectedFiles}) => {
+
+              console.log({...field.input.value});
               if (isDragActive) {
                 return 'This file is authorized';
               }
@@ -126,15 +128,27 @@ class ProjectNew extends Component {
 
 
   onSubmit(values) {
-    // const fd = new FormData();
-    // fd.append('image',values.images[0].preview);
-    // axios.post('', fd)
-    //   .then(res => {console.log(res)});
-    debugger;
+    // debugger;
     console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
-    // axios.post('http://localhost:3001/project/', {...values, createdDate:Date.now()})
+
     axios.post('http://localhost:3001/project/', {values: {...values, expirationDate: new Date(values.expirationDate),createdDate:Date.now()}})
-      .then(res => {console.log(res)});
+      .then(res => {
+        console.log(res);
+        const projectId = res.data._id;
+        if(values.images){
+          values.images.forEach((img) => {
+            const fd = new FormData();
+            fd.append('file',img);
+            fd.append('projectId', projectId);
+            axios.post('http://localhost:3001/project/upload', fd)
+              .then(res => {console.log(res)});
+          });
+        }
+      });
+
+
+
+
   }
 
 
