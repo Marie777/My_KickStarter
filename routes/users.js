@@ -4,14 +4,14 @@ import User from '../models/user';
 const router = Router();
 
 /* GET users listing. */
-router.get('/', async(req, res, next) => {
+router.post('/', async(req, res, next) => {
+  const {username, password, type} = req.body.values;
   const userDetails = {
-    userName: "String1",
-    password: "String1",
-    typePermission: "String1"
+    username,
+    password,
+    type
   };
   const newUser = await User.create(userDetails);
-
   res.send(newUser);
 });
 

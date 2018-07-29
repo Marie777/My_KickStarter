@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Field , reduxForm, propTypes } from 'redux-form';
+import { Field , reduxForm, propTypes, formValueSelector } from 'redux-form';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import {
   // FormGroup,
@@ -33,41 +34,47 @@ class Registration extends Component {
     );
   }
 
+  renderSelect(field) {
+    const {touched, error} = field.meta;
+    const className = `form-group ${touched && error ? 'alert alert-danger' : ''}`;
+
+    return (
+      <div className={className}>
+        <label>
+        {field.label}
+        <select value={field.input.value} onChange={field.onChange}>
+          <option value="grapefruit">Grapefruit</option>
+          <option value="lime">Lime</option>
+          <option value="coconut">Coconut</option>
+          <option value="mango">Mango</option>
+        </select>
+      </label>
+      </div>
+    );
+  }
 
 
   onSubmit(values) {
     // debugger;
-    // console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
-    // let projectID = this.props.projectID !== "" ? this.props.projectID : "";
-    //
-    // const data = {
-    //   values: {
-    //     ...values,
-    //     expirationDate: new Date(values.expirationDate),
-    //     createdDate:Date.now(),
-    //     projectID
-    //   }
-    // };
-    //
-    // axios.post('http://localhost:3001/project/', data)
-    //   .then(res => {
-    //     console.log(res);
-    //     if(values.images){
-    //       values.images.forEach((img) => {
-    //         const fd = new FormData();
-    //         fd.append('file',img);
-    //         fd.append('projectId', res.data._id);                       //TODO: projectId isn't correct
-    //         axios.post('http://localhost:3001/project/upload', fd)
-    //           .then(res => {console.log(res)});
-    //       });
-    //     }
-    //   });
+    console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
+
+
+    const data = {
+      values: {
+        ...values
+      }
+    };
+
+    axios.post('http://localhost:3001/users/', data)
+      .then(res => {
+        console.log(res);
+      });
 
 }
 
 
   render() {
-    const {handleSubmit} = this.props;
+    const {typeValue, handleSubmit} = this.props;
 
     return (
       <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
@@ -81,11 +88,24 @@ class Registration extends Component {
           name = "password"
           component = {this.renderField}
         />
-        <Field
-          label = "Type"
-          name = "type"
-          component = {this.renderField}
-        />
+
+        <div>
+          <label>User type</label>
+          <div>
+            <Field name="type" component="select">
+              <option></option>
+              <option value="founder">Founder</option>
+              <option value="donator">Donator</option>
+            </Field>
+          </div>
+        </div>
+        {typeValue && <div style={{
+          height: 80,
+          width: 200,
+          margin: '10px auto',
+          backgroundColor: typeValue
+        }}/>}
+
         <button type="submit" className="btn btn-primary">submit</button>
       </form>
     );
@@ -117,3 +137,13 @@ export default reduxForm({
   validate,
   form: 'RegistrationForm'
 })(Registration);
+
+const selector = formValueSelector('Registration') // <-- same as form name
+Registration = connect(
+  state => {
+    const typeValue = selector(state, 'type')
+    return {
+      typeValue
+    }
+  }
+)(Registration)
