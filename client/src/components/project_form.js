@@ -6,14 +6,14 @@ import moment from 'moment';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
 import {
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  Panel,
+  // FormGroup,
+  // FormControl,
+  // ControlLabel,
+  // Button,
+  // Panel,
   Grid,
   Row,
-  Col,
+  // Col,
 } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
 

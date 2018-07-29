@@ -35,11 +35,9 @@ router.get('/allProjects', async(req, res, next) => {
 router.post('/upload', async (req, res, next) => {
   // console.log(req);
 
-  let projectId = req.files.projectId;
+  let projectId = req.body.projectId;
   let imageFile = req.files.file;
   let imageFileName = req.files.file.name;
-
-  console.log(req.files);
 
   const dirFile = `${__dirname}/../public/uploadImg/${imageFileName}`;
 
