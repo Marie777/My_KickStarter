@@ -5,7 +5,7 @@ const router = Router();
 
 /* GET users listing. */
 //TODO: edit: if mongoID !== "" => update mongo (not create)
-router.post('/', async (req, res, next) => {
+router.post('/newProject', async (req, res, next) => {
   const {projectID, title, description, explanation, amount, createdDate, expirationDate} = req.body.values;
   const projectDetails = {
     title,
@@ -22,10 +22,18 @@ router.post('/', async (req, res, next) => {
 });
 
 
-router.get('/allProjects', async(req, res, next) => {
+
+router.get('/', async(req, res, next) => {
+  let startIndex = req.param("_start") ? Number.parseInt(req.param("_start")) : 0;
+  let endIndex = req.param("_end") ? Number.parseInt(req.param("_end")) : 0;
+
   const allProject = await Project.find();
   if(allProject){
-    res.send(allProject);
+    endIndex = ((endIndex == 0) || (endIndex > allProject.length) || (endIndex < startIndex))
+                ? allProject.length
+                : endIndex;
+    startIndex = (startIndex > endIndex) ? 0 : startIndex;
+    res.send(allProject.slice(startIndex, endIndex));
   }else{
     res.send("error");
   }
@@ -56,12 +64,8 @@ router.post('/upload', async (req, res, next) => {
     }else{
       res.send(err);
     }
-
     // res.json({file: `public/${imageFileName}`});
   });
-
-
-
 });
 
 module.exports = router;

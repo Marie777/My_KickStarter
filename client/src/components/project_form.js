@@ -131,7 +131,7 @@ class ProjectNew extends Component {
       }
     };
 
-    axios.post('http://localhost:3001/project/', data)
+    axios.post('http://localhost:3001/project/newProject', data)
       .then(res => {
         console.log(res);
         if(values.images){

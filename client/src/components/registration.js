@@ -2,16 +2,6 @@ import React, { Component } from 'react';
 import { Field , reduxForm, propTypes, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import {
-  // FormGroup,
-  // FormControl,
-  // ControlLabel,
-  // Button,
-  // Panel,
-  Grid,
-  Row,
-  // Col,
-} from 'react-bootstrap';
 
 class Registration extends Component {
 
