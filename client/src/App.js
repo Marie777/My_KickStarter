@@ -6,8 +6,6 @@ import Registration from './components/registration';
 import GenericList from './components/genericList';
 import logo from './Kickstarter-logo.png';
 
-// <h1 className="App-title">
-// </h1>
 
 class App extends Component {
   render() {
@@ -15,19 +13,22 @@ class App extends Component {
       <BrowserRouter>
           <div>
             <header className="App-header">
-              <h1>Crowd Funding </h1>
-              <div>
               <img className="App-logo" src={logo}/>
-              </div>
-
+              <h1 className="App-title">Crowd Funding </h1>
             </header>
             <div>
               <Route
                 path="/projectList"
                 render={(props) => <GenericList {...props} listName="project" />}
               />
-              <Route path="/newproject" component={ProjectNewForm} />
-              <Route path="/registration" component={Registration} />
+              <Route
+                path="/newproject"
+                component={ProjectNewForm}
+              />
+              <Route
+                path="/registration"
+                component={Registration}
+              />
             </div>
           </div>
         </BrowserRouter>

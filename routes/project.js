@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import path from 'path';
 import Project from '../models/project';
 
 const router = Router();
@@ -38,6 +39,15 @@ router.get('/', async(req, res, next) => {
     res.send("error");
   }
 });
+
+
+
+router.get('/:img', async(req, res, next) => {
+  let imgName = req.params.img;
+  res.sendFile(path.join(__dirname, '../public/uploadImg/', imgName));
+});
+
+
 
 
 router.post('/upload', async (req, res, next) => {
