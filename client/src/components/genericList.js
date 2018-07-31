@@ -19,7 +19,7 @@ class GenericList extends Component {
     return (
       <div >
         <div className="image">
-            <img src={imgUrl + imgName} height="100px" width="100px" alt="" />
+            <img src={imgUrl + imgName} height="100px" width="100px" alt="" thumbnail/>
         </div>
         <div className="content">
           <div><label> Title: </label> {item.title}</div>

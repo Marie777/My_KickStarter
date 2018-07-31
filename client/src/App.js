@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route} from 'react-router-dom'
-import './App.css';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import Homepage from './components/homepage';
 import ProjectNewForm from './components/project_form';
 import Registration from './components/registration';
 import GenericList from './components/genericList';
-import logo from './Kickstarter-logo.png';
-import { Navbar, Nav, MenuItem, NavItem, NavDropdown } from 'react-bootstrap';
+// import logo from './Kickstarter-logo.png';
+
 
 class App extends Component {
   render() {
@@ -17,11 +18,14 @@ class App extends Component {
           <Navbar>
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="projectList">Crowd Funding</a>
+                <a href="homepage">Crowd Funding</a>
               </Navbar.Brand>
             </Navbar.Header>
             <Nav>
-              <NavItem eventKey={1} href="newproject">
+              <NavItem eventKey={1} href="projectList">
+                Project List
+              </NavItem>
+              <NavItem eventKey={2} href="newproject">
                 Create Project
               </NavItem>
             </Nav>
@@ -35,6 +39,10 @@ class App extends Component {
             </Nav>
           </Navbar>
 
+           <Route
+             path="/homepage"
+             component={Homepage} 
+           />
            <Route
              path="/projectList"
              render={(props) => <GenericList {...props} listName="project" />}
@@ -52,35 +60,6 @@ class App extends Component {
     );
   }
 }
-
-// class App extends Component {
-//   render() {
-//     return (
-//       <BrowserRouter>
-//           <div>
-//             <header className="App-header">
-//               <img className="App-logo" src={logo}/>
-//               <h1 className="App-title">Crowd Funding </h1>
-//             </header>
-//             <div>
-//               <Route
-//                 path="/projectList"
-//                 render={(props) => <GenericList {...props} listName="project" />}
-//               />
-//               <Route
-//                 path="/newproject"
-//                 component={ProjectNewForm}
-//               />
-//               <Route
-//                 path="/registration"
-//                 component={Registration}
-//               />
-//             </div>
-//           </div>
-//         </BrowserRouter>
-//     );
-//   }
-// }
 
 export default App;
 

@@ -19,7 +19,7 @@ function loadingItems(name) {
 }
 
 export function fetchItems(listName, startIndex, endIndex) {
-  const URL = 'http://localhost:3001/'
+  const URL = 'http://localhost:3001/';
   const request = axios.get(`${URL}${listName}?_start=${startIndex}&_end=${endIndex}`);
   console.log("request --- >" + request);
   return dispatch => {
