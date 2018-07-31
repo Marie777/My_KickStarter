@@ -1,5 +1,22 @@
-import axios from 'axios'
+import axios from 'axios';
 
+export const FETCH_PROJECTS = 'fetch_projects';
+
+export function fetchProjects() {
+  const URL = 'http://localhost:3001/project/';
+  const request = axios.get(URL);
+  return {
+    type: FETCH_PROJECTS,
+    payload: request
+  }
+}
+
+
+
+
+
+
+///------------------------------------------
 export const RECIEVE_ITEMS = 'RECIEVE_ITEMS'
 export const LOADING_ITEMS = 'LOADING_ITEMS'
 

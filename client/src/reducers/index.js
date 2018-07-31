@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form'
-import {  RECIEVE_ITEMS, LOADING_ITEMS } from '../actions'
-
+import { reducer as formReducer } from 'redux-form';
+import {  RECIEVE_ITEMS, LOADING_ITEMS } from '../actions';
+import ProjectsReducer from './reducer_projects';
 
 export const PAGE_SIZE = 1;
 
@@ -39,6 +39,7 @@ function itemsReducer(state = {}, action) {
 const rootReducer = combineReducers({
   state: (state = {}) => state,
   form: formReducer,
+  projects : ProjectsReducer,
   itemsReducer
 });
 
