@@ -10,9 +10,6 @@ class GenericList extends Component {
 
   imageClick() {
       console.log("click");
-      return (
-        <div><label> TODO </label> </div>
-      );
   }
 
   renderItem(item) {
@@ -43,7 +40,6 @@ class GenericList extends Component {
   }
 
   render() {
-    console.log("sdf");
     const reducerObj = this.props.itemsReducer[this.props.listName] || {};
     const list = reducerObj.data || [];
     const rowCount = reducerObj.hasAll ? list.length : list.length + PAGE_SIZE;
@@ -56,7 +52,7 @@ class GenericList extends Component {
 
     const rowRenderer = ({ index, key, style }) => {
       return (
-        <div key={key} style={style}>
+        <div key={key} style={style} >
           { isRowLoaded({index}) ? this.renderItem(list[index]) : 'loading'}
         </div>
       )
@@ -82,6 +78,8 @@ class GenericList extends Component {
       </InfiniteLoader>
     )
   };
+
+
 }
 
 
