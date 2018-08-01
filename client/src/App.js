@@ -23,10 +23,7 @@ class App extends Component {
               </Navbar.Brand>
             </Navbar.Header>
             <Nav>
-              <NavItem eventKey={1} href="projectList">
-                Project List
-              </NavItem>
-              <NavItem eventKey={2} href="newproject">
+              <NavItem eventKey={1} href="newproject">
                 Create Project
               </NavItem>
             </Nav>
@@ -41,10 +38,6 @@ class App extends Component {
           </Navbar>
           <Switch>
 
-             <Route
-               path="/projectList"
-               render={(props) => <GenericList {...props} listName="project" />}
-             />
              <Route
                path="/newproject"
                component={ProjectNewForm}

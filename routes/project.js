@@ -55,6 +55,18 @@ router.get('/:_id', async(req, res, next) => {
 });
 
 
+router.delete('/delete/:_id', async(req, res, next) => {
+  const {_id} = req.params;
+
+  const deleted = await Project.findByIdAndRemove({_id});
+  if(deleted){
+    res.send(deleted);
+  }else{
+    res.send("error");
+  }
+});
+
+
 
 router.get('/image/:img', async(req, res, next) => {
   let imgName = req.params.img;

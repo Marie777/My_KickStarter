@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProject } from '../actions';
+import { fetchProject, deleteProject} from '../actions';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 
 
 class ProjectDisplay extends Component {
 
-  editClick() {
+  onDeleteClick() {
+    const {_id} = this.props.match.params;
+    this.props.deleteProject(_id, () => this.props.history.push('/'));
+  }
 
+  onEditClick() {
+    
   }
 
   componentDidMount() {
       const {_id} = this.props.match.params;
-      console.log(_id);
-
       this.props.fetchProject(_id);
   }
 
@@ -34,10 +37,10 @@ class ProjectDisplay extends Component {
           <div><label> explanation: </label> {project.explanation}</div>
         </div>
         <ButtonToolbar>
-          <Button bsStyle="primary" onClick={this.editClick.bind(this)}>
+          <Button bsStyle="primary" onClick={this.onEditClick.bind(this)}>
             Edit
           </Button>
-          <Button bsStyle= "danger">
+          <Button bsStyle= "danger" onClick={this.onDeleteClick.bind(this)}>
             Delete Project
           </Button>
         </ButtonToolbar>
@@ -53,6 +56,6 @@ function mapStateToProps({projects}, ownProps) {
   return { project: projects[ownProps.match.params._id] };
 }
 
-export default connect(mapStateToProps, {fetchProject})(ProjectDisplay);
+export default connect(mapStateToProps, {fetchProject, deleteProject})(ProjectDisplay);
 
 // export default ProjectDisplay;
