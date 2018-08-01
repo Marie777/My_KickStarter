@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import Homepage from './components/homepage';
 import ProjectNewForm from './components/project_form';
 import Registration from './components/registration';
-import GenericList from './components/genericList';
 import ProjectDisplay from './components/project_display';
+import ProjectList from './components/project_list';
 // import logo from './Kickstarter-logo.png';
 
 
@@ -52,7 +51,7 @@ class App extends Component {
              />
              <Route
                path="/"
-               component={Homepage}
+               component={ProjectList}
              />
            </Switch>
         </div>

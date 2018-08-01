@@ -27,7 +27,7 @@ class ProjectNew extends Component {
       <div className={className}>
         <label>{field.label}</label>
         <input
-        className="form-control "
+          className="form-control "
           type = "text"
           {...field.input}
         />
@@ -83,7 +83,7 @@ class ProjectNew extends Component {
           >
             {({isDragActive, isDragReject, acceptedFiles, rejectedFiles}) => {
 
-              console.log({...field.input.value});
+              // console.log({...field.input.value});
               if (isDragActive) {
                 return 'This file is authorized';
               }

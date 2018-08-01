@@ -12,7 +12,7 @@ class ProjectDisplay extends Component {
   }
 
   onEditClick() {
-    
+
   }
 
   componentDidMount() {
@@ -52,10 +52,7 @@ class ProjectDisplay extends Component {
 
 
 function mapStateToProps({projects}, ownProps) {
-  console.log(projects);
   return { project: projects[ownProps.match.params._id] };
 }
 
 export default connect(mapStateToProps, {fetchProject, deleteProject})(ProjectDisplay);
-
-// export default ProjectDisplay;
