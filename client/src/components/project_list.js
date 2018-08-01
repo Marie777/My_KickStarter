@@ -33,10 +33,10 @@ class ProjectList extends Component {
                 </Col>
                 <Col sm={23} md={8}>
                   <ListGroup>
-                    <ListGroupItem><div><label> Title: </label> {project.title}</div></ListGroupItem>
+                    <ListGroupItem><label> Title: </label> {project.title}</ListGroupItem>
                     <ListGroupItem><label> Summary: </label> {project.description}</ListGroupItem>
-                    <ListGroupItem><label> ____% funded </label>                 </ListGroupItem>
-                    <ListGroupItem><label> ____  registered </label>                 </ListGroupItem>
+                    <ListGroupItem><label> ____% funded </label></ListGroupItem>
+                    <ListGroupItem><label> ____  registered </label></ListGroupItem>
                   </ListGroup>
                 </Col>
             </Link>
