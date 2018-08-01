@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProjects } from '../actions';
+import { Link} from 'react-router-dom'
 import _ from 'lodash';
-import projectsReducer from '../reducers/reducer_projects'
-
+import { fetchProjects } from '../actions';
 
 class ProjectList extends Component {
 
-  imageClick() {
-    console.log("click");
+  editClick() {
+    console.log("editClick");
+  }
+
+  deleteClick() {
+    console.log("deleteClick");
+    this.props.fetchProjects();
   }
 
   componentDidMount() {
@@ -16,7 +20,7 @@ class ProjectList extends Component {
   }
 
   renderProjects() {
-    const imgUrl = "http://localhost:3001/project/";
+    const imgUrl = "http://localhost:3001/project/image/";
 
     return _.map(this.props.projects, project => {
       const imgName = project.images
@@ -24,22 +28,31 @@ class ProjectList extends Component {
                       ? project.images[0]
                       : "No-image-available.jpg"
                       : "No-image-available.jpg";
+      const {_id} = project;
       return(
-        <li className="list-group-item" key={project._id}>
-          <div className="image">
-              <img src={imgUrl + imgName} height="100px" width="100px" alt=""/>
-          </div>
-          <div className="content">
-            <div><label> Title: </label> {project.title}</div>
-            <div><label> Summary: </label> {project.description}</div>
-            <div><label> ____% funded </label> </div>
-            <div><label> ______ registered </label></div>
-          </div>
+        <li className="list-group-item" key={_id} >
+          <Link to={`ProjectDisplay/${_id}`}>
+            <div className="image">
+                <img
+                  src={imgUrl + imgName}
+                  height="100px"
+                  width="100px"
+                  alt=""
+                />
+            </div>
+            <div className="content">
+              <div><label> Title: </label> {project.title}</div>
+              <div><label> Summary: </label> {project.description}</div>
+              <div><label> ____% funded </label> </div>
+              <div><label> ______ registered </label></div>
+            </div>
+          </Link>
+
           <div>
-            <button onClick={this.imageClick.bind(this)}>
+            <button onClick={this.editClick.bind(this)}>
               Edit
             </button>
-            <button>
+            <button onClick={this.deleteClick.bind(this)}>
               Delete
             </button>
           </div>
@@ -61,8 +74,8 @@ class ProjectList extends Component {
 
 function mapStateToProps(state) {
   return {
-    projects: state.projects,
+    projects: state.projects
    };
 }
 
-export default connect(mapStateToProps, {fetchProjects})(ProjectList)
+export default connect(mapStateToProps, {fetchProjects})(ProjectList);

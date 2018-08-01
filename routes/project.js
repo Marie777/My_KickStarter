@@ -42,7 +42,21 @@ router.get('/', async(req, res, next) => {
 
 
 
-router.get('/:img', async(req, res, next) => {
+router.get('/:_id', async(req, res, next) => {
+  const {_id} = req.params;
+
+  const project = await Project.find({_id});
+  if(project){
+    console.log(project);
+    res.send(project);
+  }else{
+    res.send("error");
+  }
+});
+
+
+
+router.get('/image/:img', async(req, res, next) => {
   let imgName = req.params.img;
   res.sendFile(path.join(__dirname, '../public/uploadImg/', imgName));
 });

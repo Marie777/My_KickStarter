@@ -138,12 +138,12 @@ class ProjectNew extends Component {
           values.images.forEach((img) => {
             const fd = new FormData();
             fd.append('file',img);
-            fd.append('projectId', res.data._id);                       //TODO: projectId isn't correct
+            fd.append('projectId', res.data._id);
             axios.post('http://localhost:3001/project/upload', fd)
               .then(res => {console.log(res)});
           });
-        }
-      });
+        }})
+      .then( () => this.props.history.push('/'));
 
 
 
