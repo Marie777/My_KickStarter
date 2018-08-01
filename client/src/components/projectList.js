@@ -6,17 +6,8 @@ import { fetchProjects } from '../actions';
 
 class ProjectList extends Component {
 
-  editClick() {
-    console.log("editClick");
-  }
-
-  deleteClick() {
-    console.log("deleteClick");
-    this.props.fetchProjects();
-  }
-
   componentDidMount() {
-      this.props.fetchProjects();
+    this.props.fetchProjects();
   }
 
   renderProjects() {
@@ -47,15 +38,6 @@ class ProjectList extends Component {
               <div><label> ______ registered </label></div>
             </div>
           </Link>
-
-          <div>
-            <button onClick={this.editClick.bind(this)}>
-              Edit
-            </button>
-            <button onClick={this.deleteClick.bind(this)}>
-              Delete
-            </button>
-          </div>
         </li>
       );
     });

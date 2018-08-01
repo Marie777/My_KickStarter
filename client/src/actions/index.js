@@ -14,7 +14,6 @@ export function fetchProjects() {
 
 export function fetchProject(_id) {
   const URL = `http://localhost:3001/project/${_id}`;
-  console.log(URL);
   const request = axios.get(URL);
   return {
     type: FETCH_PROJECT,

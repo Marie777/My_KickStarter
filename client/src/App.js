@@ -19,7 +19,7 @@ class App extends Component {
           <Navbar>
             <Navbar.Header>
               <Navbar.Brand>
-                <a href="homepage">Crowd Funding</a>
+                <a href="/">Crowd Funding</a>
               </Navbar.Brand>
             </Navbar.Header>
             <Nav>
