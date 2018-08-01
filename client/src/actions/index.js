@@ -24,7 +24,7 @@ export function fetchProject(_id) {
 
 export function deleteProject(_id, callback) {
   const URL = `http://localhost:3001/project/delete/${_id}`;
-  axios.delete(URL).then(() => callback);
+  axios.delete(URL).then(() => callback());
 
   return {
     type: DELETE_PROJECT,
