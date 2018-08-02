@@ -17,6 +17,12 @@ class ProjectDisplay extends Component {
     this.props.history.push(`editproject/${_id}`);
   }
 
+  onDonateClick () {
+    this.props.history.push('/');
+    this.props.history.push(`donate`);
+  }
+
+
   componentDidMount() {
       const {_id} = this.props.match.params;
       this.props.fetchProject(_id);
@@ -82,7 +88,7 @@ class ProjectDisplay extends Component {
       </ListGroup>
 
         <ButtonToolbar>
-          <Button bsStyle="primary" >
+          <Button bsStyle="primary" onClick={this.onDonateClick.bind(this)}>
             Donate (Donator)
           </Button>
           <Button bsStyle="primary" onClick={this.onEditClick.bind(this)}>

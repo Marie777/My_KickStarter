@@ -116,20 +116,6 @@ class ProjectNew extends Component {
     );
   }
 
-  renderLoadingbtn(load) {
-    const {_id} = this.props.match.params ? this.props.match.params : "";
-    // console.log(_id);
-    if(_id){
-      return <Button
-        type="submit"
-        className="btn btn-primary"
-        onClick={() => load(_id)} >
-          Load project
-        </Button>
-    }else{
-      return <div></div>
-    }
-  }
 
   onSubmit(values) {
     // debugger;
@@ -166,7 +152,7 @@ class ProjectNew extends Component {
 
   //Title, Description, expiration date, picList {pic, info}, videos
   render() {
-    const {handleSubmit, pristine, reset, submitting, load} = this.props;
+    const {handleSubmit, pristine, reset, submitting} = this.props;
 
     return (
       <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
@@ -204,7 +190,6 @@ class ProjectNew extends Component {
         <ButtonToolbar>
           <Button type="submit" className="btn btn-primary" disabled={submitting}>submit</Button>
           <Button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
-          {this.renderLoadingbtn(load)}
         </ButtonToolbar>
       </form>
     );
@@ -248,30 +233,17 @@ function validate(values){
 }
 
 
-// function mapStateToProps({projects}, ownProps) {
-//   return { project: projects[ownProps.match.params._id] };
-// }
-
-// ProjectNew = connect(
-//   mapStateToProps,
-//   fetchProject
-// )(ProjectNew);
-
-// export default reduxForm({
-//   validate,
-//   form: 'ProjectNewFrom'
-// })(ProjectNew);
 
 ProjectNew = reduxForm({
   validate,
-  form: 'ProjectNewFrom'  // a unique identifier for this form
+  form: 'ProjectNewFrom'
 })(ProjectNew)
 
 ProjectNew = connect(
   ({projects}, ownProps) => ({
-    initialValues: projects[ownProps.match.params._id] // pull initial values from account reducer
+    initialValues: projects[ownProps.match.params._id]
   }),
-  { load: fetchProject }               // bind account loading action creator
+  { load: fetchProject }
 )(ProjectNew)
 
 export default ProjectNew

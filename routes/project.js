@@ -4,7 +4,7 @@ import Project from '../models/project';
 
 const router = Router();
 
-/* GET users listing. */
+
 //Create project
 router.post('/newProject', async (req, res, next) => {
   const {title, description, explanation, amount, expirationDate} = req.body.values;
@@ -17,9 +17,7 @@ router.post('/newProject', async (req, res, next) => {
     expirationDate,
   };
   const newProject = await Project.create(projectDetails);
-  console.log(newProject);
   res.send(newProject);
-  // res.send(req.body.values);
 });
 
 
@@ -34,14 +32,12 @@ router.post('/newProject/:_id', async (req, res, next) => {
     amount,
     expirationDate,
   };
-  const newProject = await Project.findOneAndUpdate({_id}, projectDetails);
-  console.log(newProject);
-  res.send(newProject);
-  // res.send(req.body.values);
+  const updatedProject = await Project.findOneAndUpdate({_id}, projectDetails);
+  res.send(updatedProject);
 });
 
 
-
+//Fetch all projects (optional: according to start or end index)
 router.get('/', async(req, res, next) => {
   let startIndex = req.param("_start") ? Number.parseInt(req.param("_start")) : 0;
   let endIndex = req.param("_end") ? Number.parseInt(req.param("_end")) : 0;
@@ -59,7 +55,7 @@ router.get('/', async(req, res, next) => {
 });
 
 
-
+//Fetch pproject according to id
 router.get('/:_id', async(req, res, next) => {
   const {_id} = req.params;
 
@@ -73,6 +69,7 @@ router.get('/:_id', async(req, res, next) => {
 });
 
 
+//Delete project according to id
 router.delete('/delete/:_id', async(req, res, next) => {
   const {_id} = req.params;
 
@@ -85,15 +82,14 @@ router.delete('/delete/:_id', async(req, res, next) => {
 });
 
 
-
+//send image to client
 router.get('/image/:img', async(req, res, next) => {
   let imgName = req.params.img;
   res.sendFile(path.join(__dirname, '../public/uploadImg/', imgName));
 });
 
 
-
-
+//Upload image according to project id
 router.post('/upload', async (req, res, next) => {
   // console.log(req);
 
@@ -121,5 +117,6 @@ router.post('/upload', async (req, res, next) => {
     // res.json({file: `public/${imageFileName}`});
   });
 });
+
 
 module.exports = router;

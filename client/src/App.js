@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import ProjectNewForm from './components/project_form';
 import Registration from './components/registration_form';
+import donationForm from './components/donation_form';
 import login from './components/login_form';
 import ProjectDisplay from './components/project_display';
 import ProjectList from './components/project_list';
@@ -52,6 +53,10 @@ class App extends Component {
              <Route
                path="/registration"
                component={Registration}
+             />
+             <Route
+               path="/donate"
+               component={donationForm}
              />
              <Route
                path="/login"

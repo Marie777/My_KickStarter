@@ -22,13 +22,14 @@ const checkUser = async(username, password) => {
 }
 
 
+//Check is username and password is valid
 router.post('/login', async(req, res, next) => {
   const {username, password} = req.body.values;
   res.send(await checkUser(username, password));
 });
 
 
-
+//Create new user
 router.post('/', async(req, res, next) => {
   const {username, password, type} = req.body.values;
 
@@ -48,6 +49,7 @@ router.post('/', async(req, res, next) => {
 });
 
 
+//Fetch all users
 router.get('/allUsers', async(req, res, next) => {
   const allUsers = await User.find();
   if(allUsers){
