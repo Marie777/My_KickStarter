@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Field , reduxForm, propTypes, formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Button, ButtonToolbar } from 'react-bootstrap';
+
 
 class Registration extends Component {
 
@@ -47,9 +49,7 @@ class Registration extends Component {
 
   onSubmit(values) {
     // debugger;
-    console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
-
-
+    // console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
     const data = {
       values: {
         ...values
@@ -60,12 +60,11 @@ class Registration extends Component {
       .then(res => {
         console.log(res);
       });
-
 }
 
 
   render() {
-    const {typeValue, handleSubmit} = this.props;
+    const {handleSubmit, typeValue, pristine, reset, submitting} = this.props;
 
     return (
       <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
@@ -80,7 +79,7 @@ class Registration extends Component {
           component = {this.renderField}
         />
 
-        <div>
+        <div className = "form-group">
           <label>User type</label>
           <div>
             <Field name="type" component="select">
@@ -97,7 +96,10 @@ class Registration extends Component {
           backgroundColor: typeValue
         }}/>}
 
-        <button type="submit" className="btn btn-primary">submit</button>
+        <ButtonToolbar>
+          <Button type="submit" className="btn btn-primary" disabled={submitting}>submit</Button>
+          <Button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
+        </ButtonToolbar>
       </form>
     );
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Label, Grid, Row, Col, ListGroup, ListGroupItem} from 'react-bootstrap';
+import { Grid, Row, Col, ListGroup, ListGroupItem} from 'react-bootstrap';
 import _ from 'lodash';
 import { fetchProjects } from '../actions';
 
@@ -48,6 +48,8 @@ class ProjectList extends Component {
   renderfields() {
     const {projects} = this.props;
     console.log(Object.keys(projects).length);
+    // console.log(this.props.test);
+
     return (
       <ListGroup>
         <ListGroupItem>Total live projects: {Object.keys(projects).length}</ListGroupItem>
@@ -72,7 +74,8 @@ class ProjectList extends Component {
 
 function mapStateToProps(state) {
   return {
-    projects: state.projects
+    projects: state.projects,
+    // test: state
    };
 }
 

@@ -15,9 +15,18 @@ const checkUser = async(username, password) => {
 
     if(match) {
         //login
-        res.send("Valide");
+        return("true");
+    }else{
+      return("false");
     }
 }
+
+
+router.post('/login', async(req, res, next) => {
+  const {username, password} = req.body.values;
+  res.send(await checkUser(username, password));
+});
+
 
 
 router.post('/', async(req, res, next) => {

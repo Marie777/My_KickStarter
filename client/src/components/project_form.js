@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { Field , reduxForm, propTypes } from 'redux-form';
+import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Dropzone from 'react-dropzone';
 import axios from 'axios';
-import {
-  // FormGroup,
-  // FormControl,
-  // ControlLabel,
-  // Button,
-  // Panel,
-  Grid,
-  Row,
-  // Col,
-} from 'react-bootstrap';
+import { fetchProject } from '../actions';
+import { Button, Grid, Row, ButtonToolbar } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class ProjectNew extends Component {
+
+  componentDidMount() {
+    // const {_id} = this.props.match.params ? this.props.match.params : "";
+    // const { project } = this.props;
+    // console.log(project);
+    // this.props.fetchProject(_id);
+  }
 
   renderField(field) {
     const {touched, error} = field.meta;
@@ -116,6 +116,20 @@ class ProjectNew extends Component {
     );
   }
 
+  renderLoadingbtn() {
+    const {_id} = this.props.match.params ? this.props.match.params : "";
+    console.log(_id);
+    if(_id){
+      return <Button
+        type="submit"
+        className="btn btn-primary"
+        onClick={() => fetchProject(_id)} >
+          Load project
+        </Button>
+    }else{
+      return <div></div>
+    }
+  }
 
   onSubmit(values) {
     // debugger;
@@ -144,15 +158,13 @@ class ProjectNew extends Component {
           });
         }})
       .then( () => this.props.history.push('/'));
-
-
-
   }
 
 
   //Title, Description, expiration date, picList {pic, info}, videos
   render() {
-    const {handleSubmit} = this.props;
+    const {handleSubmit, pristine, reset, submitting, fetchProject} = this.props;
+
 
     return (
       <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
@@ -187,7 +199,11 @@ class ProjectNew extends Component {
           name = "explanation"
           component = {this.renderField}
         />
-        <button type="submit" className="btn btn-primary">submit</button>
+        <ButtonToolbar>
+          <Button type="submit" className="btn btn-primary" disabled={submitting}>submit</Button>
+          <Button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
+          {this.renderLoadingbtn()}
+        </ButtonToolbar>
       </form>
     );
   }
@@ -230,6 +246,14 @@ function validate(values){
 }
 
 
+function mapStateToProps({projects}, ownProps) {
+  return { project: projects[ownProps.match.params._id] };
+}
+
+ProjectNew = connect(
+  mapStateToProps,
+  fetchProject
+)(ProjectNew);
 
 export default reduxForm({
   validate,

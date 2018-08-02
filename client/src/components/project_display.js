@@ -12,7 +12,9 @@ class ProjectDisplay extends Component {
   }
 
   onEditClick() {
-
+    const {_id} = this.props.match.params;
+    this.props.history.push('/');
+    this.props.history.push(`editproject/${_id}`);
   }
 
   componentDidMount() {
@@ -79,14 +81,15 @@ class ProjectDisplay extends Component {
         </ListGroupItem>
       </ListGroup>
 
-
-
         <ButtonToolbar>
+          <Button bsStyle="primary" >
+            Donate (Donator)
+          </Button>
           <Button bsStyle="primary" onClick={this.onEditClick.bind(this)}>
-            Edit
+            Edit (User + Admin)
           </Button>
           <Button bsStyle= "danger" onClick={this.onDeleteClick.bind(this)}>
-            Delete Project
+            Delete (Admin)
           </Button>
         </ButtonToolbar>
       </div>
