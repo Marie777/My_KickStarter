@@ -28,19 +28,20 @@ class Donation extends Component {
 
 
   onSubmit(values) {
-    // debugger;
-    const {userId} = this.props.match.params;
+    // const {userId} = this.props.match.params;
+    const {_id} = this.props.match.params;
+
     const data = {
       values: {
-        ...values,
-        userId
+        ...values
        }
      };
-     //TODO:
-    // axios.post('http://localhost:3001/users/', data)
-    //   .then(res => {
-    //     console.log(res);
-    //   });
+    axios.post(`http://localhost:3001/project/addDonation/${_id}`, data)
+      .then(res => {
+        console.log(res);
+        this.props.history.push(`/`)
+        this.props.history.push(`ProjectDisplay/${_id}`)
+      });
 }
 
 

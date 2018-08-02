@@ -10,7 +10,7 @@ const ProjectSchema = mongoose.Schema({
   images: [String],
   video: String,
   donationList: [{
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    // user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     donationAmount: Number
   }]
 });

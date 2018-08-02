@@ -12,12 +12,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 class ProjectNew extends Component {
 
-  componentDidMount() {
-    // const {_id} = this.props.match.params ? this.props.match.params : "";
-    // const { project } = this.props;
-    // console.log(project);
-    // this.props.fetchProject(_id);
-  }
 
   renderField(field) {
     const {touched, error} = field.meta;

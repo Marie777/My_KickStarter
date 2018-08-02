@@ -37,6 +37,35 @@ router.post('/newProject/:_id', async (req, res, next) => {
 });
 
 
+//Add new donation
+router.post('/addDonation/:_id', async (req, res, next) => {
+  const {_id} = req.params;
+  const {donationAmount} = req.body.values;
+
+  let updatedProject = await Project.findOneAndUpdate(
+    {_id},
+    {$push : {donationList : {donationAmount}} },
+    {safe:true, upsert:true}
+  );
+  if(updatedProject){
+    console.log(updatedProject);
+    res.send(updatedProject);
+  }else{
+    res.send(err);
+  }
+});
+
+
+//TODO: Delete donationAmount
+router.post('/addDonation/:_id', async (req, res, next) => {
+  const {_id} = req.params;
+  const {donationAmount} = req.body.values;
+
+  // const updatedProject = await Project.findOneAndUpdate({_id}, {donationAmount});
+  // res.send(updatedProject);
+});
+
+
 //Fetch all projects (optional: according to start or end index)
 router.get('/', async(req, res, next) => {
   let startIndex = req.param("_start") ? Number.parseInt(req.param("_start")) : 0;

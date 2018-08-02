@@ -18,8 +18,9 @@ class ProjectDisplay extends Component {
   }
 
   onDonateClick () {
+    const {_id} = this.props.match.params;
     this.props.history.push('/');
-    this.props.history.push(`donate`);
+    this.props.history.push(`donate/${_id}`);
   }
 
 
@@ -36,7 +37,7 @@ class ProjectDisplay extends Component {
       return _.map(project.donationList, donation => {
           return (
             <Row>
-            <label> Donation amount: </label>
+            <label> Donation amount: {donation.donationAmount}</label>
             </Row>
           );
       });

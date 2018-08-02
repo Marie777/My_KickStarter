@@ -55,7 +55,7 @@ class App extends Component {
                component={Registration}
              />
              <Route
-               path="/donate"
+               path="/donate/:_id"
                component={donationForm}
              />
              <Route
