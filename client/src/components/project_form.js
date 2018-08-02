@@ -116,14 +116,14 @@ class ProjectNew extends Component {
     );
   }
 
-  renderLoadingbtn() {
+  renderLoadingbtn(load) {
     const {_id} = this.props.match.params ? this.props.match.params : "";
-    console.log(_id);
+    // console.log(_id);
     if(_id){
       return <Button
         type="submit"
         className="btn btn-primary"
-        onClick={() => fetchProject(_id)} >
+        onClick={() => load(_id)} >
           Load project
         </Button>
     }else{
@@ -134,18 +134,21 @@ class ProjectNew extends Component {
   onSubmit(values) {
     // debugger;
     console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
-    let projectID = this.props.projectID !== "" ? this.props.projectID : "";
+    const {_id} = this.props.match.params;
+
+    const url = _id
+            ? `http://localhost:3001/project/newProject/${_id}`
+            : 'http://localhost:3001/project/newProject';
+
 
     const data = {
       values: {
         ...values,
-        expirationDate: new Date(values.expirationDate),
-        createdDate:Date.now(),
-        projectID
+        expirationDate: new Date(values.expirationDate)
       }
     };
 
-    axios.post('http://localhost:3001/project/newProject', data)
+    axios.post(url, data)
       .then(res => {
         console.log(res);
         if(values.images){
@@ -163,8 +166,7 @@ class ProjectNew extends Component {
 
   //Title, Description, expiration date, picList {pic, info}, videos
   render() {
-    const {handleSubmit, pristine, reset, submitting, fetchProject} = this.props;
-
+    const {handleSubmit, pristine, reset, submitting, load} = this.props;
 
     return (
       <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
@@ -202,7 +204,7 @@ class ProjectNew extends Component {
         <ButtonToolbar>
           <Button type="submit" className="btn btn-primary" disabled={submitting}>submit</Button>
           <Button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
-          {this.renderLoadingbtn()}
+          {this.renderLoadingbtn(load)}
         </ButtonToolbar>
       </form>
     );
@@ -246,16 +248,30 @@ function validate(values){
 }
 
 
-function mapStateToProps({projects}, ownProps) {
-  return { project: projects[ownProps.match.params._id] };
-}
+// function mapStateToProps({projects}, ownProps) {
+//   return { project: projects[ownProps.match.params._id] };
+// }
+
+// ProjectNew = connect(
+//   mapStateToProps,
+//   fetchProject
+// )(ProjectNew);
+
+// export default reduxForm({
+//   validate,
+//   form: 'ProjectNewFrom'
+// })(ProjectNew);
+
+ProjectNew = reduxForm({
+  validate,
+  form: 'ProjectNewFrom'  // a unique identifier for this form
+})(ProjectNew)
 
 ProjectNew = connect(
-  mapStateToProps,
-  fetchProject
-)(ProjectNew);
+  ({projects}, ownProps) => ({
+    initialValues: projects[ownProps.match.params._id] // pull initial values from account reducer
+  }),
+  { load: fetchProject }               // bind account loading action creator
+)(ProjectNew)
 
-export default reduxForm({
-  validate,
-  form: 'ProjectNewFrom'
-})(ProjectNew);
+export default ProjectNew

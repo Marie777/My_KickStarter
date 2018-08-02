@@ -5,18 +5,36 @@ import Project from '../models/project';
 const router = Router();
 
 /* GET users listing. */
-//TODO: edit: if mongoID !== "" => update mongo (not create)
+//Create project
 router.post('/newProject', async (req, res, next) => {
-  const {projectID, title, description, explanation, amount, createdDate, expirationDate} = req.body.values;
+  const {title, description, explanation, amount, expirationDate} = req.body.values;
   const projectDetails = {
     title,
     description,
     explanation,
     amount,
-    createdDate,
+    createdDate : Date.now(),
     expirationDate,
   };
   const newProject = await Project.create(projectDetails);
+  console.log(newProject);
+  res.send(newProject);
+  // res.send(req.body.values);
+});
+
+
+//Update project
+router.post('/newProject/:_id', async (req, res, next) => {
+  const {_id} = req.params;
+  const {title, description, explanation, amount, expirationDate} = req.body.values;
+  const projectDetails = {
+    title,
+    description,
+    explanation,
+    amount,
+    expirationDate,
+  };
+  const newProject = await Project.findOneAndUpdate({_id}, projectDetails);
   console.log(newProject);
   res.send(newProject);
   // res.send(req.body.values);
