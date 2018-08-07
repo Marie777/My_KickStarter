@@ -21,3 +21,5 @@ benchmarks/graphs
 
 #uploads
 public/uploadImg
+
+.idea
