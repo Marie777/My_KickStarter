@@ -52,6 +52,7 @@ class ProjectNew extends Component {
     const files = field.input.value;
     return (
         <div className="fallback">
+            <label>Upload images</label>
           <Grid>
             <Row>
           <Dropzone
@@ -111,6 +112,59 @@ class ProjectNew extends Component {
   }
 
 
+    renderDropzoneVideo(field) {
+    const files = field.input.value;
+    return (
+        <div className="fallback">
+            <label>Upload video</label>
+          <Grid>
+            <Row>
+          <Dropzone
+              style={{
+                width: '600px',
+                height: '200px',
+                borderWidth: '2px',
+                borderColor: 'rgb(102, 102, 102)',
+                borderStyle: 'dashed',
+                borderRadius: '5px',
+                padding: '200px',
+                margin: '30px'
+              }}
+              name={field.name}
+              onDrop={(filesToUploadV, e) => {
+                field.input.onChange(filesToUploadV);
+              }}
+              maxSize={5242880}
+              multiple={false}
+              accept={'video/*'}
+              className="drop-zone"
+
+          >
+            {({isDragActive, isDragReject, acceptedFiles, rejectedFiles}) => {
+
+              // console.log({...field.input.value});
+              if (isDragActive) {
+                return 'This file is authorized';
+              }
+              if (isDragReject) {
+                return 'This file is not authorized';
+              }
+              return acceptedFiles.length || rejectedFiles.length
+                  ? `Accepted ${acceptedFiles.length}, rejected ${rejectedFiles.length} files`
+                  : 'Try dropping some files.';
+            }}
+          </Dropzone>
+          {field.meta.touched && field.meta.error && <span className="error">{field.meta.error}</span>}
+
+            </Row>
+            <Row>
+            </Row>
+          </Grid>
+        </div>
+    );
+  }
+
+
   onSubmit(values) {
     // debugger;
     console.log("values react:    " + JSON.stringify({...values, createdDate:Date.now()}));
@@ -130,7 +184,7 @@ class ProjectNew extends Component {
 
     axios.post(url, data)
       .then(res => {
-        console.log(res);
+        // console.log(res);
         if(values.images){
           values.images.forEach((img) => {
             const fd = new FormData();
@@ -139,12 +193,22 @@ class ProjectNew extends Component {
             axios.post('http://localhost:3001/project/upload', fd)
               .then(res => {console.log(res)});
           });
-        }})
-      .then( () => this.props.history.push('/'));
+        }
+        // debugger;
+        //   if(values.video){
+        //       const fd = new FormData();
+        //       fd.append('file',values.video);
+        //       fd.append('name',values.video.name);
+        //       fd.append('projectId', res.data._id);
+        //       axios.post('http://localhost:3001/project/uploadVideo',
+        //           fd, { headers: { 'Content-Type': 'video/mp4'}} )
+        //           .then(res => {console.log(res)});
+        //      }
+      })
+      // .then( () => this.props.history.push('/'));
   }
 
 
-  //Title, Description, expiration date, picList {pic, info}, videos
   render() {
     const {handleSubmit, pristine, reset, submitting} = this.props;
 
@@ -175,7 +239,12 @@ class ProjectNew extends Component {
           label="Images"
           name="images"
           component={this.renderDropzoneInput}
-        />
+      />
+          <Field
+              label="Video"
+              name="video"
+              component={this.renderDropzoneVideo}
+          />
         <Field
           label = "Explanation"
           name = "explanation"
@@ -192,9 +261,7 @@ class ProjectNew extends Component {
   static propTypes = {
       ...propTypes,
       expirationDate: PropTypes.string
-      // other props you might be using
     }
-
 }
 
 function validate(values){

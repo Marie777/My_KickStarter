@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { fetchProject, deleteProject, deleteDonation} from '../actions';
 import {ButtonToolbar, Button, Grid, Row, Col, ListGroup, ListGroupItem, NavItem} from 'react-bootstrap';
 import _ from 'lodash';
+import { Player } from 'video-react';
+import "video-react/dist/video-react.css";
 
 class ProjectDisplay extends Component {
 
@@ -144,12 +146,37 @@ class ProjectDisplay extends Component {
         }
     }
 
+
+    renderVideo(project){
+        if(project.video) {
+            const urlVideo = "http://localhost:3001/project/video/" + project.video;
+            console.log(project.video);
+
+            return (
+                <ListGroupItem>
+                    <Player
+                        playsInline
+                        poster="/assets/poster.png"
+                        src={urlVideo}
+                        fluid={false}
+                        width={350}
+                        height={300}
+                    />
+                </ListGroupItem>
+            );
+        }else{
+            return null;
+        }
+    }
+
   render () {
       // debugger;
+
     const { project } = this.props;
     if(!project){
       return <div> Loading...</div>;
     }
+
     return (
       <div>
 
@@ -165,8 +192,8 @@ class ProjectDisplay extends Component {
         <ListGroupItem><label> Donations: </label>
           <Grid className="container-fluid"> {this.renderDonations()} </Grid>
         </ListGroupItem>
+          {this.renderVideo(project)};
       </ListGroup>
-
         <ButtonToolbar>
             {this.renderDonateBTN()}
             {this.renderEditBTN()}

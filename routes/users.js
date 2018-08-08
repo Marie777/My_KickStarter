@@ -4,7 +4,7 @@ import User from '../models/user';
 
 const router = Router();
 
-//TODO: test?
+
 // const checkUser = async(username, password) => {
 //     //... fetch user from a db etc.
 //     const findUsers = await User.find({username});
