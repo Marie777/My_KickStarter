@@ -6,7 +6,7 @@ const router = Router();
 
 
 //Create project
-router.post('/newProject', async (req, res, next) => {
+router.post('/newProject', async (req, res) => {
   const {title, description, explanation, amount, expirationDate} = req.body.values;
   const projectDetails = {
     title,
@@ -22,7 +22,7 @@ router.post('/newProject', async (req, res, next) => {
 
 
 //Update project
-router.post('/newProject/:_id', async (req, res, next) => {
+router.post('/newProject/:_id', async (req, res) => {
   const {_id} = req.params;
   const {title, description, explanation, amount, expirationDate} = req.body.values;
   const projectDetails = {
@@ -38,7 +38,7 @@ router.post('/newProject/:_id', async (req, res, next) => {
 
 
 //Add new donation
-router.post('/addDonation/:_id', async (req, res, next) => {
+router.post('/addDonation/:_id', async (req, res) => {
   const {_id} = req.params;
   const {donationAmount} = req.body.values;
 
@@ -51,7 +51,7 @@ router.post('/addDonation/:_id', async (req, res, next) => {
     console.log(updatedProject);
     res.send(updatedProject);
   }else{
-    res.send(err);
+    res.send("err");
   }
 });
 
@@ -67,9 +67,10 @@ router.post('/addDonation/:_id', async (req, res, next) => {
 
 
 //Fetch all projects (optional: according to start or end index)
-router.get('/', async(req, res, next) => {
-  let startIndex = req.param("_start") ? Number.parseInt(req.param("_start")) : 0;
-  let endIndex = req.param("_end") ? Number.parseInt(req.param("_end")) : 0;
+router.get('/', async(req, res) => {
+  let {_start, _end} = req.params;
+  let startIndex = _start ? Number.parseInt(_start) : 0;
+  let endIndex = _end ? Number.parseInt(_end) : 0;
 
   const allProject = await Project.find();
   if(allProject){
@@ -84,8 +85,8 @@ router.get('/', async(req, res, next) => {
 });
 
 
-//Fetch pproject according to id
-router.get('/:_id', async(req, res, next) => {
+//Fetch project according to id
+router.get('/:_id', async(req, res) => {
   const {_id} = req.params;
 
   const project = await Project.find({_id});
@@ -99,7 +100,7 @@ router.get('/:_id', async(req, res, next) => {
 
 
 //Delete project according to id
-router.delete('/delete/:_id', async(req, res, next) => {
+router.delete('/delete/:_id', async(req, res) => {
   const {_id} = req.params;
 
   const deleted = await Project.findByIdAndRemove({_id});
@@ -112,14 +113,14 @@ router.delete('/delete/:_id', async(req, res, next) => {
 
 
 //send image to client
-router.get('/image/:img', async(req, res, next) => {
+router.get('/image/:img', async(req, res) => {
   let imgName = req.params.img;
   res.sendFile(path.join(__dirname, '../public/uploadImg/', imgName));
 });
 
 
 //Upload image according to project id
-router.post('/upload', async (req, res, next) => {
+router.post('/upload', async (req, res) => {
   // console.log(req);
 
   let projectId = req.body.projectId;

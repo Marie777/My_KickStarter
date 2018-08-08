@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchProject, deleteProject} from '../actions';
-import { ButtonToolbar, Button, Grid, Row, Col, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {ButtonToolbar, Button, Grid, Row, Col, ListGroup, ListGroupItem, NavItem} from 'react-bootstrap';
 import _ from 'lodash';
 
 class ProjectDisplay extends Component {
@@ -65,6 +65,58 @@ class ProjectDisplay extends Component {
     }
   }
 
+
+
+    renderDonateBTN(){
+        if (JSON.parse(window.localStorage.getItem('user'))) {
+            const user = JSON.parse(window.localStorage.getItem('user'));
+            if (user.type === "founder") {
+                return (null)
+            }
+            if (user.type === "donator") {
+                return (
+                    <Button bsStyle="primary" onClick={this.onDonateClick.bind(this)}>
+                        Donate
+                    </Button>
+                )
+            }
+        }
+    }
+
+
+    renderEditeBTN(){
+        if (JSON.parse(window.localStorage.getItem('user'))) {
+            const user = JSON.parse(window.localStorage.getItem('user'));
+            if (user.type === "donator") {
+                return (null)
+            }
+            if (user.type === "founder" || user.type === "admin") {
+                return (
+                    <Button bsStyle="primary" onClick={this.onEditClick.bind(this)}>
+                        Edit
+                    </Button>
+                )
+            }
+        }
+    }
+
+
+    renderDeleteBTN(){
+        if (JSON.parse(window.localStorage.getItem('user'))) {
+            const user = JSON.parse(window.localStorage.getItem('user'));
+            if (user.type === "founder" || user.type === "donator") {
+                return (null)
+            }
+            if ( user.type === "admin") {
+                return (
+                    <Button bsStyle= "danger" onClick={this.onDeleteClick.bind(this)}>
+                        Delete (Admin)
+                    </Button>
+                )
+            }
+        }
+    }
+
   render () {
       // debugger;
     const { project } = this.props;
@@ -89,15 +141,9 @@ class ProjectDisplay extends Component {
       </ListGroup>
 
         <ButtonToolbar>
-          <Button bsStyle="primary" onClick={this.onDonateClick.bind(this)}>
-            Donate (Donator)
-          </Button>
-          <Button bsStyle="primary" onClick={this.onEditClick.bind(this)}>
-            Edit (User + Admin)
-          </Button>
-          <Button bsStyle= "danger" onClick={this.onDeleteClick.bind(this)}>
-            Delete (Admin)
-          </Button>
+            {this.renderDonateBTN()}
+            {this.renderEditeBTN()}
+            {this.renderDeleteBTN()}
         </ButtonToolbar>
       </div>
     );

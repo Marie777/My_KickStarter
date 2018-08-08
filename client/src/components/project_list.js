@@ -7,8 +7,37 @@ import { fetchProjects } from '../actions';
 
 class ProjectList extends Component {
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchProjects();
+
+      // if(JSON.parse(window.localStorage.getItem('user'))){
+      // const {username, type} = JSON.parse(window.localStorage.getItem('user'));
+      //     console.log("-------- " + username + " " + type);
+      // }
+    //   window.localStorage.removeItem('user');
+
+  }
+
+  foundedPrecent(_id){
+      const project = this.props.projects[_id];
+      if(project.donationList){
+          const {donationList} = this.props.projects[_id];
+          let sumDonations  = donationList.reduce((acc,d)=> {
+              acc = acc + d.donationAmount;
+              return acc;
+          },0);
+          return (sumDonations/project.amount*100).toFixed(2);
+      }else{
+          return 0;
+      }
+  }
+
+  registeredDOnations(_id){
+      if(this.props.projects[_id].donationList){
+          return this.props.projects[_id].donationList.length;
+      }else{
+          return 0;
+      }
   }
 
   renderProjects() {
@@ -35,8 +64,8 @@ class ProjectList extends Component {
                   <ListGroup>
                     <ListGroupItem><label> Title: </label> {project.title}</ListGroupItem>
                     <ListGroupItem><label> Summary: </label> {project.description}</ListGroupItem>
-                    <ListGroupItem><label> ____% funded </label></ListGroupItem>
-                    <ListGroupItem><label> ____  registered </label></ListGroupItem>
+                    <ListGroupItem><label> {this.foundedPrecent(project._id)}% funded </label></ListGroupItem>
+                    <ListGroupItem><label> {this.registeredDOnations(project._id)}  registered donations</label></ListGroupItem>
                   </ListGroup>
                 </Col>
             </Link>
@@ -45,7 +74,15 @@ class ProjectList extends Component {
     });
   }
 
-  renderfields() {
+  liveProjectsNotYetFounded(){
+      const {projects} = this.props;
+      return Object.keys(projects).reduce((acc,_id)=> {
+          let f = this.foundedPrecent(_id);
+          return (f < 100 ? acc + 1 : acc);
+      },0)
+    }
+
+  renderfields(){
     const {projects} = this.props;
     console.log(Object.keys(projects).length);
     // console.log(this.props.test);
@@ -53,10 +90,11 @@ class ProjectList extends Component {
     return (
       <ListGroup>
         <ListGroupItem>Total live projects: {Object.keys(projects).length}</ListGroupItem>
-        <ListGroupItem>Total live projects not yet founded: </ListGroupItem>
+        <ListGroupItem>Total live projects not yet founded: {this.liveProjectsNotYetFounded()}</ListGroupItem>
       </ListGroup>
     );
   }
+
 
   render () {
     return (

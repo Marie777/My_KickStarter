@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Field , reduxForm} from 'redux-form';
-// import { connect } from 'react-redux';
-// import axios from 'axios';
+import { connect } from 'react-redux';
+import axios from 'axios';
 import { Button, ButtonToolbar } from 'react-bootstrap';
+// import { fetchUser } from '../actions';
+// import {fetchProjects} from "../actions";
 
 class LoginForm extends Component {
 
@@ -35,40 +37,48 @@ class LoginForm extends Component {
         ...values
       }
     };
-    //TODO:
-    // axios.post('http://localhost:3001/users/', data)
-    //   .then(res => {
-    //     console.log(res);
-    //   });
+    const URL = `http://localhost:3001/users/login`;
+    axios.post(URL, data).then((res) => {
+        const {user} = res.data;
+        console.log(user);
+        window.localStorage.setItem('user', JSON.stringify(user));
+            this.props.history.push({
+            pathname: '/',
+                state: { user }
+        });
+    });
 
-}
-
-
-  render() {
-    const {handleSubmit, pristine, reset, submitting} = this.props;
-
-    return (
-      <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
-        <Field
-          label = "Username"
-          name = "username"
-          component = {this.renderField}
-        />
-        <Field
-          label = "Password"
-          name = "password"
-          component = {this.renderField}
-        />
-        <ButtonToolbar>
-          <Button type="submit" className="btn btn-primary" disabled={submitting}>submit</Button>
-          <Button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
-        </ButtonToolbar>
-      </form>
-    );
+    // this.props.fetchUser(data);
   }
 
 
-}
+    render() {
+        // const {user} = this.props;
+
+        const {handleSubmit, pristine, reset, submitting} = this.props;
+
+        return (
+          <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
+            <Field
+              label = "Username"
+              name = "username"
+              component = {this.renderField}
+            />
+            <Field
+              label = "Password"
+              name = "password"
+              component = {this.renderField}
+            />
+            <ButtonToolbar>
+              <Button type="submit" className="btn btn-primary" disabled={submitting}>submit</Button>
+              <Button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Clear Values</Button>
+            </ButtonToolbar>
+          </form>
+        );
+      }
+
+
+    }
 
 function validate(values){
   // console.log("values:    " + JSON.stringify(values));
@@ -83,8 +93,29 @@ function validate(values){
 }
 
 
-
-export default reduxForm({
+LoginForm = reduxForm({
   validate,
-  form: 'loginForm'
-})(LoginForm);
+  form: 'LoginForm'
+})(LoginForm)
+
+LoginForm = connect(
+  ({user}) => ({
+      user
+  })
+  // ,{ fetchUser }
+)(LoginForm)
+
+export default LoginForm
+
+// export default reduxForm({
+//   validate,
+//   form: 'loginForm'
+// })(LoginForm);
+
+// function mapStateToProps(state) {
+//     return {
+//         projects: state.projects
+//     };
+// }
+//
+// export default connect(mapStateToProps, {fetchProjects})(LoginForm);

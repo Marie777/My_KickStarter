@@ -5,32 +5,44 @@ import User from '../models/user';
 const router = Router();
 
 //TODO: test?
-const checkUser = async(username, password) => {
-    //... fetch user from a db etc.
-    const findUsers = await User.find({username});
-    if(!findUsers){
-      res.send("error");
-    }
-    const match = await bcrypt.compare(password, findUsers.passwordHash);
-
-    if(match) {
-        //login
-        return("true");
-    }else{
-      return("false");
-    }
-}
+// const checkUser = async(username, password) => {
+//     //... fetch user from a db etc.
+//     const findUsers = await User.find({username});
+//     if(!findUsers){
+//       return("error");
+//     }
+//     const match = await bcrypt.compare(password, findUsers.passwordHash);
+//
+//     if(match) {
+//         //login
+//         return("true");
+//     }else{
+//       return("false");
+//     }
+// }
 
 
 //Check is username and password is valid
-router.post('/login', async(req, res, next) => {
-  const {username, password} = req.body.values;
-  res.send(await checkUser(username, password));
+router.post('/login', async(req, res) => {
+    const {username, password} = req.body.values;
+
+    const findUser = await User.find({username});
+    if(!findUser){
+        res.send("error");
+    }
+    const match = await bcrypt.compare(password, findUser[0].password);
+
+    if(match) {
+        //login
+        res.send({login: "true", user: findUser[0]});
+    }else{
+        res.send({login: "false", user: findUser[0]});
+    }
 });
 
 
 //Create new user
-router.post('/', async(req, res, next) => {
+router.post('/', async(req, res) => {
   const {username, password, type} = req.body.values;
 
   bcrypt.hash(password, 10, async(err, hash) => {
@@ -50,7 +62,7 @@ router.post('/', async(req, res, next) => {
 
 
 //Fetch all users
-router.get('/allUsers', async(req, res, next) => {
+router.get('/allUsers', async(req, res) => {
   const allUsers = await User.find();
   if(allUsers){
     res.send(allUsers);
@@ -58,5 +70,16 @@ router.get('/allUsers', async(req, res, next) => {
     res.send("error");
   }
 });
+
+//Delete users
+router.get('/deleteall', async(req, res) => {
+    const deleted = await User.collection.drop();
+    if(deleted){
+        res.send(deleted);
+    }else{
+        res.send("error");
+    }
+});
+
 
 module.exports = router;

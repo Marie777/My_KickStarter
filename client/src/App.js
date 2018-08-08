@@ -11,9 +11,70 @@ import ProjectList from './components/project_list';
 
 
 class App extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            user:null
+        }
+    }
+
+    componentWillMount() {
+        if(JSON.parse(window.localStorage.getItem('user'))){
+            const user = JSON.parse(window.localStorage.getItem('user'));
+            this.setState(user);
+            console.log("-------- " + user.type);
+        }
+    }
+
+    renderLoginout(){
+        if(!JSON.parse(window.localStorage.getItem('user'))){
+            return(
+                <NavItem eventKey={3} href="/login">
+                    Login
+                </NavItem>
+            );
+        }else{
+            return (
+                <NavItem eventKey={4} href="/" onClick={() => window.localStorage.removeItem('user')}>
+                    Logout
+                </NavItem>
+            );
+        }
+    }
+
+    renderCreateProject() {
+        if (JSON.parse(window.localStorage.getItem('user'))) {
+            const user = JSON.parse(window.localStorage.getItem('user'));
+            if (user.type === "donator") {
+                    return (null)
+                }
+            if (user.type === "founder") {
+                    return (
+                        <NavItem eventKey={1} href="/newproject">
+                            Create Project
+                        </NavItem>
+                    )
+                }
+            }
+        }
+
+
+        renderRegistration() {
+            if (JSON.parse(window.localStorage.getItem('user'))) {
+                const user = JSON.parse(window.localStorage.getItem('user'));
+                return ( null );
+                }else{
+                    return (
+                        <NavItem eventKey={2} href="/registration">
+                           Registration
+                        </NavItem>
+                    );
+            }
+        }
+
+
   render() {
     return (
-
       <BrowserRouter>
         <div>
 
@@ -24,17 +85,11 @@ class App extends Component {
               </Navbar.Brand>
             </Navbar.Header>
             <Nav>
-              <NavItem eventKey={1} href="/newproject">
-                Create Project
-              </NavItem>
+                {this.renderCreateProject()}
             </Nav>
             <Nav pullRight>
-              <NavItem eventKey={2} href="/registration">
-                Registration
-              </NavItem>
-              <NavItem eventKey={3} href="/login">
-                Login
-              </NavItem>
+                {this.renderRegistration()}
+                {this.renderLoginout()}
             </Nav>
           </Navbar>
           <Switch>

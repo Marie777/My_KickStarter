@@ -42,6 +42,9 @@ class Registration extends Component {
           <option value="mango">Mango</option>
         </select>
       </label>
+          <div className="text-help">
+              {touched ? error : ""}
+          </div>
       </div>
     );
   }
@@ -57,8 +60,8 @@ class Registration extends Component {
     };
 
     axios.post('http://localhost:3001/users/', data)
-      .then(res => {
-        console.log(res);
+      .then(() => {
+        this.props.history.push('/');
       });
 }
 
@@ -86,6 +89,7 @@ class Registration extends Component {
               <option></option>
               <option value="founder">Founder</option>
               <option value="donator">Donator</option>
+              <option value="admin">Admin</option>
             </Field>
           </div>
         </div>

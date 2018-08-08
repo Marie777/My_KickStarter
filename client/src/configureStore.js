@@ -4,7 +4,7 @@ import promise from 'redux-promise';
 import { createLogger } from 'redux-logger';
 import rootReducer from './reducers';
 
-// const loggerMiddleware = createLogger()
+const loggerMiddleware = createLogger()
 
 export default function configureStore(preloadedState) {
   return createStore(
@@ -12,8 +12,9 @@ export default function configureStore(preloadedState) {
     preloadedState,
     applyMiddleware(
       thunkMiddleware,
-      promise
+      promise,
+        loggerMiddleware
     )
   )
 }
-      //, loggerMiddleware
+
