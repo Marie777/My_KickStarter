@@ -9,13 +9,6 @@ class ProjectList extends Component {
 
   componentWillMount() {
     this.props.fetchProjects();
-
-      // if(JSON.parse(window.localStorage.getItem('user'))){
-      // const {username, type} = JSON.parse(window.localStorage.getItem('user'));
-      //     console.log("-------- " + username + " " + type);
-      // }
-    //   window.localStorage.removeItem('user');
-
   }
 
   foundedPrecent(_id){
@@ -84,9 +77,6 @@ class ProjectList extends Component {
 
   renderfields(){
     const {projects} = this.props;
-    console.log(Object.keys(projects).length);
-    // console.log(this.props.test);
-
     return (
       <ListGroup>
         <ListGroupItem>Total live projects: {Object.keys(projects).length}</ListGroupItem>
@@ -112,8 +102,7 @@ class ProjectList extends Component {
 
 function mapStateToProps(state) {
   return {
-    projects: state.projects,
-    // test: state
+    projects: state.projects
    };
 }
 

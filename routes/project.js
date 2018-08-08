@@ -56,15 +56,6 @@ router.post('/addDonation/:_id', async (req, res) => {
 });
 
 
-//TODO: Delete donationAmount
-router.post('/addDonation/:_id', async (req, res, next) => {
-  const {_id} = req.params;
-  const {donationAmount} = req.body.values;
-
-  // const updatedProject = await Project.findOneAndUpdate({_id}, {donationAmount});
-  // res.send(updatedProject);
-});
-
 
 //Fetch all projects (optional: according to start or end index)
 router.get('/', async(req, res) => {
@@ -142,11 +133,27 @@ router.post('/upload', async (req, res) => {
     if(updateImg){
       res.send(updateImg);
     }else{
-      res.send(err);
+      res.send("err");
     }
     // res.json({file: `public/${imageFileName}`});
   });
 });
 
+
+//Delete donation from project according to id
+router.get('/deletedonation/:_id/:donationAmount', async(req, res) => {
+    const {_id, donationAmount} = req.params;
+
+    let deleteDonation = await Project.findOneAndUpdate(
+        {_id },
+        {$pull : {donationList : {donationAmount}} },
+        {safe:true, upsert:true}
+    );
+    if(deleteDonation){
+        res.send(deleteDonation);
+    }else{
+        res.send("err");
+    }
+});
 
 module.exports = router;

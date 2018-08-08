@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchProject, deleteProject} from '../actions';
+import { fetchProject, deleteProject, deleteDonation} from '../actions';
 import {ButtonToolbar, Button, Grid, Row, Col, ListGroup, ListGroupItem, NavItem} from 'react-bootstrap';
 import _ from 'lodash';
 
 class ProjectDisplay extends Component {
+
+    componentDidMount() {
+        const {_id} = this.props.match.params;
+        this.props.fetchProject(_id);
+    }
 
   onDeleteClick() {
     const {_id} = this.props.match.params;
@@ -24,10 +29,13 @@ class ProjectDisplay extends Component {
   }
 
 
-  componentDidMount() {
-      const {_id} = this.props.match.params;
-      this.props.fetchProject(_id);
+
+  onDeleteDonationClick (donationAmount) {
+    const {_id} = this.props.match.params;
+      this.props.deleteDonation(_id, donationAmount, () => this.props.history.push('/'));
   }
+
+
 
   renderDonations(){
     const { project } = this.props;
@@ -37,34 +45,31 @@ class ProjectDisplay extends Component {
       return _.map(project.donationList, donation => {
           return (
             <Row>
-            <label> Donation amount: {donation.donationAmount}</label>
+                <label> Donation amount: {donation.donationAmount}    </label>
+                {this.renderDeleteDonationBTN(donation.donationAmount)}
             </Row>
           );
       });
     }
   }
 
-  renderImages() {
-    const imgUrl = "http://localhost:3001/project/image/";
-    const { project } = this.props;
-    if(!project.images){
-      return(<div> </div>);
-    }else{
-      return _.map(project.images, img => {
-          return (
-            <Col sm={23} md={3}>
-              <img
-                src={imgUrl + img}
-                height="200px"
-                width="200px"
-                alt=""
-              />
-            </Col>
-          );
-      });
-    }
-  }
 
+
+    renderDeleteDonationBTN(donationAmount){
+        if (JSON.parse(window.localStorage.getItem('user'))) {
+            const user = JSON.parse(window.localStorage.getItem('user'));
+            if (user.type === "donator") {
+                return (null)
+            }
+            if (user.type === "founder" || user.type === "admin") {
+                return (
+                    <Button bsStyle="primary" onClick={this.onDeleteDonationClick.bind(this, donationAmount)}>
+                        Delete
+                    </Button>
+                )
+            }
+        }
+    }
 
 
     renderDonateBTN(){
@@ -84,7 +89,8 @@ class ProjectDisplay extends Component {
     }
 
 
-    renderEditeBTN(){
+
+    renderEditBTN(){
         if (JSON.parse(window.localStorage.getItem('user'))) {
             const user = JSON.parse(window.localStorage.getItem('user'));
             if (user.type === "donator") {
@@ -117,6 +123,27 @@ class ProjectDisplay extends Component {
         }
     }
 
+    renderImages() {
+        const imgUrl = "http://localhost:3001/project/image/";
+        const { project } = this.props;
+        if(!project.images){
+            return(<div> </div>);
+        }else{
+            return _.map(project.images, img => {
+                return (
+                    <Col sm={23} md={3}>
+                        <img
+                            src={imgUrl + img}
+                            height="200px"
+                            width="200px"
+                            alt=""
+                        />
+                    </Col>
+                );
+            });
+        }
+    }
+
   render () {
       // debugger;
     const { project } = this.props;
@@ -142,7 +169,7 @@ class ProjectDisplay extends Component {
 
         <ButtonToolbar>
             {this.renderDonateBTN()}
-            {this.renderEditeBTN()}
+            {this.renderEditBTN()}
             {this.renderDeleteBTN()}
         </ButtonToolbar>
       </div>
@@ -156,4 +183,4 @@ function mapStateToProps({projects}, ownProps) {
   return { project: projects[ownProps.match.params._id] };
 }
 
-export default connect(mapStateToProps, {fetchProject, deleteProject})(ProjectDisplay);
+export default connect(mapStateToProps, {fetchProject, deleteProject, deleteDonation})(ProjectDisplay);
